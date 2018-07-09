@@ -49,37 +49,37 @@
 > * Clean Lifecycle 在进行真正的构建之前进行一些清理工作。 
 > * Default Lifecycle 构建的核心部分，编译，测试，打包，部署等等。 
 > * Site Lifecycle 生成项目报告，站点，发布站点。 
-> * 1.1 clean生命周期
-* pre-clean:执行清理前的工作；
-* clean:清理上一次构建生成的所有文件；
-* post-clean:执行清理后的工作
-> * 1.2 default生命周期
-* default生命周期是最核心的，它包含了构建项目时真正需要执行的所有步骤。
-* validate
-* initialize
-* generate-sources
-* process-sources
-* generate-resources
-* process-resources:复制和处理资源文件到target目录，准备打包；
-* compile:编译项目的源代码；
-* process-classes
-* generate-test-sources
-* process-test-sources
-* generate-test-resources
-* process-test-resources
-* test-compile:编译测试源代码；
-* process-test-classes
-* test:运行测试代码；
-* prepare-package
-* package:;打包成jar或者war或者其他格式的分发包；
-* pre-integration-test
-* integration-test
-* post-integration-test
-* verify
-* install:将打好的包安装到本地仓库，供其他项目使用；
-* deploy:将打好的包安装到远程仓库，供其他项目使用；
-> * 1.3 site生命周期
-* pre-site
-* site:生成项目的站点文档；
-* post-site
-* site-deploy:发布生成的站点文档
+* 1.1 clean生命周期
+> * pre-clean:执行清理前的工作；
+> * clean:清理上一次构建生成的所有文件；
+> * post-clean:执行清理后的工作
+* 1.2 default生命周期
+> * default生命周期是最核心的，它包含了构建项目时真正需要执行的所有步骤。
+> * validate
+> * initialize
+> * generate-sources
+> * process-sources
+> * generate-resources
+> * process-resources:复制和处理资源文件到target目录，准备打包；
+> * compile:编译项目的源代码；
+> * process-classes
+> * generate-test-sources
+> * process-test-sources
+> * generate-test-resources
+> * process-test-resources
+> * test-compile:编译测试源代码；
+> * process-test-classes
+> * test:运行测试代码；
+> * prepare-package
+> * package:;打包成jar或者war或者其他格式的分发包；
+> * pre-integration-test
+> * integration-test
+> * post-integration-test
+> * verify
+> * install:将打好的包安装到本地仓库，供其他项目使用；
+> * deploy:将打好的包安装到远程仓库，供其他项目使用；
+* 1.3 site生命周期
+> * pre-site
+> * site:生成项目的站点文档；
+> * post-site
+> * site-deploy:发布生成的站点文档
