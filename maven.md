@@ -20,8 +20,7 @@
 * 2\.artifactID就是项目的唯一的标识符，实际对应项目的名称
 * 3\.version版本号
 * 4\.packaging定义了该项目的打包方式，一般为jar可有可无，一些有效的打包值是jar，war，ear和pom，不同的包对应不同的生命周期阶段
-
-'''
+、、、
 <groupId>com.example</groupId>
  <artifactId>demo</artifactId>
  <version>0.0.1-SNAPSHOT</version>
