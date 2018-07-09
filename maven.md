@@ -19,7 +19,7 @@
 * 1\.groupId是项目组织唯一的标识符，实际对应包的结构
 * 2\.artifactID就是项目的唯一的标识符，实际对应项目的名称
 * 3\.version版本号
-* 4\.packaging定义了该项目的打包方式，一般为jar可有可
+* 4\.packaging定义了该项目的打包方式，一般为jar可有可无，一些有效的打包值是jar，war，ear和pom，不同的包对应不同的生命周期阶段
  <groupId>com.example</groupId>
  <artifactId>demo</artifactId>
  <version>0.0.1-SNAPSHOT</version>
@@ -43,3 +43,43 @@
 					<artifactId>spring-core</artifactId>
 				</exclusion>
 </exclusions>
+	
+# 五、maven生命周期
+* 1\.Maven定义了三套生命周期：clean、default、site，每个生命周期都包含了一些阶段（phase）。三套生命周期相互独立，但各个生命周期中的phase却是有顺序的，且后面的phase依赖于前面的phase。执行某个phase时，其前面的phase会依顺序执行，但不会触发另外两套生命周期中的任何phase。
+> * Clean Lifecycle 在进行真正的构建之前进行一些清理工作。 
+> * Default Lifecycle 构建的核心部分，编译，测试，打包，部署等等。 
+> * Site Lifecycle 生成项目报告，站点，发布站点。 
+> * 1.1 clean生命周期
+* pre-clean:执行清理前的工作；
+* clean:清理上一次构建生成的所有文件；
+* post-clean:执行清理后的工作
+> * 1.2 default生命周期
+* default生命周期是最核心的，它包含了构建项目时真正需要执行的所有步骤。
+* validate
+* initialize
+* generate-sources
+* process-sources
+* generate-resources
+* process-resources:复制和处理资源文件到target目录，准备打包；
+* compile:编译项目的源代码；
+* process-classes
+* generate-test-sources
+* process-test-sources
+* generate-test-resources
+* process-test-resources
+* test-compile:编译测试源代码；
+* process-test-classes
+* test:运行测试代码；
+* prepare-package
+* package:;打包成jar或者war或者其他格式的分发包；
+* pre-integration-test
+* integration-test
+* post-integration-test
+* verify
+* install:将打好的包安装到本地仓库，供其他项目使用；
+* deploy:将打好的包安装到远程仓库，供其他项目使用；
+> * 1.3 site生命周期
+* pre-site
+* site:生成项目的站点文档；
+* post-site
+* site-deploy:发布生成的站点文档
