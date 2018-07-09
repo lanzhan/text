@@ -14,18 +14,16 @@
  （在没有使用私服的情况下，查找jar包先去本地，没有再去中央仓库下载。
    而在使用了私服的情况下，查找jar包先去本地，没有去私服，然后才是中央仓库）
 >* 2.3其他公共库
-# 三、maven坐标（用来唯一标识一个构建的统一规范）:主要由三部分组成，分别是groupId、artifactId、version简称GAV
+# 三、maven坐标（用来唯一标识一个构建的统一规范）:主要由groupId、artifactId、version组成简称GAV
 ##
 * 1\.groupId是项目组织唯一的标识符，实际对应包的结构
 * 2\.artifactID就是项目的唯一的标识符，实际对应项目的名称
 * 3\.version版本号
-* 4\.packaging定义了该项目的打包方式，一般为jar可有可无
-、、、
+* 4\.packaging定义了该项目的打包方式，一般为jar可有可
  <groupId>com.example</groupId>
  <artifactId>demo</artifactId>
  <version>0.0.1-SNAPSHOT</version>
  <packaging>jar</packaging>
-、、、
 # 四、maven依赖管理
 * 1\.依赖范围scope， 用来控制依赖和编译，测试，运行的classpath的关系。具体的依赖范围有如下6种：
 > * compile： 默认编译依赖范围。对于编译，测试，运行三种classpath都有效
@@ -34,3 +32,14 @@
 > * runtime：运行时提供。例如:jdbc驱动
 > * system：系统范围,自定义构件，指定systemPath；跟provided 相似，但是在系统中要以外部JAR包的形式提供，maven不会在repository查找它。
 > * import：只使用在<dependencyManagement>中，表示从其它的pom中导入dependency的配置。
+* 2\.传递依赖：若C依赖B，B依赖A，那么称C对B是第一直接依赖，B对A是第二直接依赖，c对A是传递依赖。
+* 3\.向下传递：<optional>true</optional>在这里默认值为true此时不向下传递，false则向下传递
+* 4\.依赖冲突：直接与间接依赖中包含有同一个坐标不同版本的资源依赖，以直接依赖的版本为准（就近原则）
+* 5\.排除依赖：若c依赖b，b依赖a，那么c若不想依赖于a时，可使用<exclusions>接触依赖，
+ <exclusions>
+				<!-- 排除spring-core的传递依赖 -->
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
+				</exclusion>
+</exclusions>
