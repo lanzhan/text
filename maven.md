@@ -20,10 +20,13 @@
 * 2\.artifactID就是项目的唯一的标识符，实际对应项目的名称
 * 3\.version版本号
 * 4\.packaging定义了该项目的打包方式，一般为jar可有可无，一些有效的打包值是jar，war，ear和pom，不同的包对应不同的生命周期阶段
+---
  <groupId>com.example</groupId>
  <artifactId>demo</artifactId>
  <version>0.0.1-SNAPSHOT</version>
  <packaging>jar</packaging>
+---
+
 # 四、maven依赖管理
 * 1\.依赖范围scope， 用来控制依赖和编译，测试，运行的classpath的关系。具体的依赖范围有如下6种：
 > * compile： 默认编译依赖范围。对于编译，测试，运行三种classpath都有效
@@ -37,12 +40,14 @@
 * 4\.依赖冲突：直接与间接依赖中包含有同一个坐标不同版本的资源依赖，以直接依赖的版本为准（就近原则）
 * 5\.排除依赖：若c依赖b，b依赖a，那么c若不想依赖于a时，可使用<exclusions>接触依赖，
  <exclusions>
-				<!-- 排除spring-core的传递依赖 -->
-				<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring-core</artifactId>
-				</exclusion>
+<!-- 排除spring-core的传递依赖 -->
+---
+<exclusion>
+<groupId>org.springframework</groupId>
+<artifactId>spring-core</artifactId>
+</exclusion>
 </exclusions>
+---
 	
 # 五、maven生命周期
 * 1\.Maven定义了三套生命周期：clean、default、site，每个生命周期都包含了一些阶段（phase）。三套生命周期相互独立，但各个生命周期中的phase却是有顺序的，且后面的phase依赖于前面的phase。执行某个phase时，其前面的phase会依顺序执行，但不会触发另外两套生命周期中的任何phase。
@@ -85,5 +90,66 @@
 > * site-deploy:发布生成的站点文档
 # maven插件
 * 1\.Maven的核心仅仅定义了抽象的生命周期，具体的任务都是交由插件完成的。一个插件通常可以完成多个任务，每一个任务就叫做插件的一个目标。Maven的生命周期与插件目标相互绑定，以完成某个具体的构建任务。
-* 将插件的目标（goal）绑定到生命周期的具体阶段（phase）
- ![插件](https://images0.cnblogs.com/i/293735/201407/012039514021164.png)
+> * 将插件的目标（goal）绑定到生命周期的具体阶段（phase）
+> * ![插件](https://images0.cnblogs.com/i/293735/201407/012039514021164.png)
+* 2\.内置绑定：Maven对一些生命周期的阶段（phase）默认绑定了插件目标，因为不同的项目有jar、war、pom等不同的打包方式，因此对应的有不同的绑定关系，其中针对default生命周期的jar包打包方式的绑定关系如下：
+> * ![内置绑定](https://images0.cnblogs.com/i/293735/201407/012040407939185.png)
+* 3\.自定义绑定:
+---
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>2.2.1</version>
+            <executions>
+                <execution>
+                    <id>attach-source</id>
+                    <phase>package</phase><!-- 要绑定到的生命周期的阶段 -->
+                    <goals>
+                        <goal>jar-no-fork</goal><!-- 要绑定的插件的目标 -->
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+    ……
+</build>
+---
+* 4\.插件仓库：
+> * 跟其他构件一样，插件也是根据坐标存储在Maven仓库中。超级POM中Maven配置的默认插件远程仓库如下：
+---
+<pluginRepositories>
+    <pluginRepository>
+      <id>central</id>
+      <name>Central Repository</name>
+      <url>http://repo.maven.apache.org/maven2</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+    </pluginRepository>
+</pluginRepositories>
+---
+# maven继承
+* 1\. 继承为了消除重复，可以把pom中很多相同的配置提取出来；如：grouptId，version等。在使用的时候子工程直接继承父工程的依赖版本号，子工程中不再需要指定具体版本号，方便统一管控项目的依赖版本问题。
+> *父工程的pom.xml中的打包方式必须设置为pom方式:
+> *<!-- 父工程 -->
+---
+	<parent>
+		<groupId>cn.sm1234</groupId>
+		<artifactId>parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+---
+* 2\.聚合：如果想一次构建多个项目模块，那则需要对多个项目模块进行聚合
+---
+<modules>
+    <module>../子项目名称1</module>
+    <module>../子项目名称2</module>
+     <module>../子项目名称3</module>
+</modules>
+---
